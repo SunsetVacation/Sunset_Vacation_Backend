@@ -26,13 +26,7 @@ SECRET_KEY = 'django-insecure-99j+i-nkpzj3@&vy5g0g!##9zc41z6(%ezfk#o4jqv(+_e#e-4
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:8080',
-#     'https://mt-oporajita.web.app'
-# ]
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_HEADERS = ["*"]
+
 
 
 # Application definition

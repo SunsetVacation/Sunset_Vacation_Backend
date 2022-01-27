@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
-from .models import User
-from .serializers import UserSerializer
+from .models import User, Hosting
+# from .serializers import UserSerializer
 from rest_framework import status
 import json
 import requests
@@ -21,5 +21,10 @@ def login(request):
         return Response({"error": "No user exists with provided user email"}, status=status.HTTP_404_NOT_FOUND)
     if user.password != password:
         return Response({"error": "Password did not match"}, status=status.HTTP_401_UNAUTHORIZED)
-    user_serializer = UserSerializer(user)
-    return Response({"user": user_serializer.data}, status=status.HTTP_200_OK)
+    if not user.host:
+        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False}, status=status.HTTP_200_OK)
+    try:
+        Hosting.objects.get(ownerId=user.userId, published=False)
+    except Hosting.DoesNotExist:
+        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False})
+    return Response({"user": user.userId, "host": user.host, "unpublishedHosting": True}, status=status.HTTP_200_OK)

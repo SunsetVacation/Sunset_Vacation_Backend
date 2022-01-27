@@ -80,3 +80,41 @@ class User(models.Model):
         on_delete=models.SET_NULL
     )
 
+
+class Hosting(models.Model):
+    hosting = models.AutoField(
+        primary_key=True
+    )
+
+    title = models.CharField(
+        max_length=100,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+    description = models.CharField(
+        max_length=500,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+    maxDaysRefund = models.IntegerField(
+        default=None
+    )
+
+    hostingStartDate = models.DateTimeField(
+        default=None
+    )
+
+    published = models.BooleanField(
+        default=False
+    )
+
+    ownerId = models.ForeignKey(
+        User,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+
