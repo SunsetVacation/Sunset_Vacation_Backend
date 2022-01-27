@@ -8,18 +8,21 @@ class Address(models.model):
 
     houseNo = models.IntegerField(
         allow_blank=False,
+        default=null,
         allow_null=True,
         trim_whitespace=True
     )
 
     city = models.CharField(
         max_length=45,
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
     )
 
     zipCode = models.IntegerField(
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
@@ -27,10 +30,12 @@ class Address(models.model):
 
     country = models.CharField(
         max_length=45,
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
     )
+
 
 class User(models.model):
     userId = models.AutoField(
@@ -39,6 +44,7 @@ class User(models.model):
 
     firstName = models.CharField(
         max_length=100,
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
@@ -46,6 +52,7 @@ class User(models.model):
 
     lastName = models.CharField(
         max_length=100,
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
@@ -53,6 +60,7 @@ class User(models.model):
 
     email = models.EmailField(
         max_length=50,
+        default=null,
         allow_blank=false,
         allow_null=True,
         unique=True
@@ -60,6 +68,7 @@ class User(models.model):
 
     phoneNo = models.CharField(
         max_length=20,
+        default=null,
         allow_blank=False,
         allow_null=True,
         trim_whitespace=True
