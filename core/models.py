@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Address(models.model):
     addressId = models.AutoField(
         primary_key=True
