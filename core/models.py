@@ -80,14 +80,3 @@ class User(models.Model):
         on_delete=models.SET_NULL
     )
 
-
-class Profile(models.Model):
-    id = models.AutoField(
-        primary_key=True
-    )
-
-    name = models.TextField(
-        max_length=30,
-        null=False,
-        blank=False
-    )
