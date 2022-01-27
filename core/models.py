@@ -1,5 +1,44 @@
 from django.db import models
+CREATE TABLE `address` (
+  `AddressID` int NOT NULL,
+  `HouseNo` int DEFAULT NULL,
+  `StreetNo` int DEFAULT NULL,
+  `City` varchar(45) DEFAULT NULL,
+  `ZipCode` int DEFAULT NULL,
+  `Country` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`AddressID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+class Address(models.model):
+    addressId = models.AutoField(
+        primary_key=True
+    )
+
+    houseNo = models.IntegerField(
+        allow_blank=False,
+        allow_null=True,
+        trim_whitespace=True
+    )
+
+    city = models.CharField(
+        max_length=45,
+        allow_blank=False,
+        allow_null=True,
+        trim_whitespace=True
+    )
+
+    zipCode = models.IntegerField(
+        allow_blank=False,
+        allow_null=True,
+        trim_whitespace=True
+    )
+
+    country = models.CharField(
+        max_length=45,
+        allow_blank=False,
+        allow_null=True,
+        trim_whitespace=True
+    )
 
 class User(models.model):
     userId = models.AutoField(
@@ -9,14 +48,14 @@ class User(models.model):
     firstName = models.CharField(
         max_length=100,
         allow_blank=False,
-        allow_null=False,
+        allow_null=True,
         trim_whitespace=True
     )
 
     lastName = models.CharField(
         max_length=100,
         allow_blank=False,
-        allow_null=False,
+        allow_null=True,
         trim_whitespace=True
     )
 
