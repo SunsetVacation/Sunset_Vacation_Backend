@@ -91,7 +91,7 @@ DATABASES = {
   'default': {
     # MySQL engine. Powered by the mysqlclient module.
     'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'demo',
+    'NAME': 'sunset-vacation',
     'USER': 'root',
     'PASSWORD': 'root',
     'HOST': 'localhost',

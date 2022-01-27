@@ -67,6 +67,13 @@ class User(models.Model):
         default=False
     )
 
+    password = models.CharField(
+        max_length=500,
+        default=None,
+        blank=False,
+        null=True
+    )
+
     addressId = models.ForeignKey(
         Address,
         null=True,
