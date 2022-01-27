@@ -1,13 +1,4 @@
 from django.db import models
-CREATE TABLE `address` (
-  `AddressID` int NOT NULL,
-  `HouseNo` int DEFAULT NULL,
-  `StreetNo` int DEFAULT NULL,
-  `City` varchar(45) DEFAULT NULL,
-  `ZipCode` int DEFAULT NULL,
-  `Country` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`AddressID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 class Address(models.model):
     addressId = models.AutoField(
