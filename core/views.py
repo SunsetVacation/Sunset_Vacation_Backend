@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
-from .models import User, Hosting
+from .models import User, Hosting, Address
 # from .serializers import UserSerializer
 from rest_framework import status
 import json
@@ -22,9 +22,9 @@ def login(request):
     if user.password != password:
         return Response({"error": "Password did not match"}, status=status.HTTP_401_UNAUTHORIZED)
     if not user.host:
-        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False}, status=status.HTTP_200_OK)
+        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False, "success": True}, status=status.HTTP_200_OK)
     try:
         Hosting.objects.get(ownerId=user.userId, published=False)
     except Hosting.DoesNotExist:
-        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False})
-    return Response({"user": user.userId, "host": user.host, "unpublishedHosting": True}, status=status.HTTP_200_OK)
+        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False, "success": True})
+    return Response({"user": user.userId, "host": user.host, "unpublishedHosting": True, "success": True}, status=status.HTTP_200_OK)
