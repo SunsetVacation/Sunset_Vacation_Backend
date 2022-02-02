@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
-from .models import User, Hosting, Address
+from .models import User,Address
+from hosting.models import Hosting
 # from .serializers import UserSerializer
 from rest_framework import status
 import json

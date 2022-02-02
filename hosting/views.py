@@ -16,10 +16,11 @@ import requests
 def getCategories(request):
     categories = Categories.objects.all().values_list('categoryName', flat=True).distinct()
     print(categories)
-    return Response({'categories': categories, 'success': True},status=status.HTTP_200_OK)
+    return Response({'categories': categories, 'success': True}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def getSubCategories(request):
     category = request.data["category"]
-    subCategories = Categories.objects.filter(categoryName=category)
-    return Response({'subcategories' : subCategories, 'success': True}, status=status.HTTP_200_OK)
+    sub_categories = Categories.objects.filter(categoryName=category)
+    return Response({'subcategories': sub_categories, 'success': True}, status=status.HTTP_200_OK)
