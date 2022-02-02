@@ -5,7 +5,9 @@ from . import views
 
 router = DefaultRouter()
 
+
 urlpatterns = [
     path('categories/', views.getCategories, name="getCategories"),
     path('subcategories/', views.getSubCategories, name="getSubCategories"),
+    # path('', include(router.urls))
 ]

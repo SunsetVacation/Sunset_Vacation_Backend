@@ -5,7 +5,7 @@ from core.models import User
 # Create your models here.
 
 
-class Categories(models.Model):
+class Category(models.Model):
     categoryId = models.AutoField(
         primary_key=True
     )
