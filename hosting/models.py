@@ -68,3 +68,57 @@ class Hosting(models.Model):
         null=True,
         on_delete=models.SET_NULL
     )
+
+
+class Property(models.Model):
+    hostingId = models.ForeignKey(
+        Hosting,
+        null=False,
+        on_delete= models.CASCADE
+    )
+
+    perNightCost = models.IntegerField(
+        default=None
+    )
+
+    entirePrivateOrShared = models.CharField(
+        max_length=20,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+    highestGuestNo = models.IntegerField(
+        default=None
+    )
+
+    beds = models.IntegerField(
+        default=None
+    )
+
+    bedrooms = models.IntegerField(
+        default=None
+    )
+
+    bathrooms = models.IntegerField(
+        default=None
+    )
+
+    privateBathroomAvailable = models.IntegerField(
+        default=None
+    )
+
+    needHostConfirmation = models.BooleanField(
+        default=False
+    )
+
+    partialPayAllowed = models.BooleanField(
+        default=False
+    )
+
+    categoryId = models.ForeignKey(
+        Category,
+        null=False,
+        on_delete=models.CASCADE
+    )
+
