@@ -11,32 +11,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class HostingSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=100,required=True)
-    description = serializers.CharField(max_length=500)
-    maxDaysRefund = serializers.IntegerField()
-    hostingStartDate = serializers.DateTimeField()
-    published = serializers.BooleanField()
-    ownerId = serializers.IntegerField(required=True)
-
-    def create(self, validated_data):
-        # Once the request data has been validated, we can create a todo item instance in the database
-        return Hosting.objects.create(
-            title=validated_data.get('title'),
-            description=validated_data.get('description'),
-            maxDaysRefund=validated_data.get('maxDaysRefund'),
-            hostingStartDate=validated_data.get('hostingStartDate'),
-            published=validated_data.get('published'),
-            ownerId=validated_data.get('ownerId')
-        )
-
-    # def update(self, instance, validated_data):
-    #     # Once the request data has been validated, we can update the todo item instance in the database
-    #     print(instance.description)
-    #     instance.text = validated_data.get('text', instance.text)
-    #     print(instance.description)
-    #     instance.save()
-    #     return instance
-
     class Meta:
         model = Hosting
         fields = (
@@ -46,7 +20,7 @@ class HostingSerializer(serializers.ModelSerializer):
             'maxDaysRefund',
             'hostingStartDate',
             'published',
-            'ownerId'
+            'owner'
         )
 
 

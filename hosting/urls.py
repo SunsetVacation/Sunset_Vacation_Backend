@@ -9,5 +9,6 @@ router = DefaultRouter()
 urlpatterns = [
     path('categories/', views.getCategories, name="getCategories"),
     path('subcategories/', views.getSubCategories, name="getSubCategories"),
+    path('property/', views.PropertyHostingView.as_view()),
     # path('', include(router.urls))
 ]

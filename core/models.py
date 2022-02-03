@@ -74,7 +74,7 @@ class User(models.Model):
         null=True
     )
 
-    addressId = models.ForeignKey(
+    address = models.ForeignKey(
         Address,
         null=True,
         on_delete=models.SET_NULL

@@ -31,3 +31,43 @@ from .models import  User
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_HEADERS = ["*"]
+
+
+class HostingSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(max_length=100, required=True)
+    description = serializers.CharField(max_length=500, required=False, default="")
+    maxDaysRefund = serializers.IntegerField(required=False, default=None)
+    hostingStartDate = serializers.DateField(required=False, default=None)
+    published = serializers.BooleanField(required=False, default=False)
+    ownerId = serializers.IntegerField(required=True)
+
+    def create(self, validated_data):
+        # Once the request data has been validated, we can create a todo item instance in the database
+        return Hosting.objects.create(
+            title=validated_data.get('title'),
+            description=validated_data.get('description'),
+            maxDaysRefund=validated_data.get('maxDaysRefund'),
+            hostingStartDate=validated_data.get('hostingStartDate'),
+            published=validated_data.get('published'),
+            owner_id=validated_data.get('ownerId')
+        )
+
+    # def update(self, instance, validated_data):
+    #     # Once the request data has been validated, we can update the todo item instance in the database
+    #     print(instance.description)
+    #     instance.text = validated_data.get('text', instance.text)
+    #     print(instance.description)
+    #     instance.save()
+    #     return instance
+
+    class Meta:
+        model = Hosting
+        fields = (
+            'hostingId',
+            'title',
+            'description',
+            'maxDaysRefund',
+            'hostingStartDate',
+            'published',
+            'ownerId'
+        )

@@ -52,60 +52,67 @@ class Hosting(models.Model):
     )
 
     maxDaysRefund = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
-    hostingStartDate = models.DateTimeField(
-        default=None
+    hostingStartDate = models.DateField(
+        default=None,
+        null=True
     )
 
     published = models.BooleanField(
         default=False
     )
 
-    ownerId = models.ForeignKey(
+    owner = models.ForeignKey(
         User,
         null=True,
-        on_delete=models.SET_NULL
+        on_delete=models.CASCADE
     )
 
 
 class Property(models.Model):
-    hostingId = models.ForeignKey(
+    hosting = models.ForeignKey(
         Hosting,
         null=False,
         on_delete= models.CASCADE
     )
 
     perNightCost = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     entirePrivateOrShared = models.CharField(
         max_length=20,
-        default=None,
         blank=False,
         null=True
     )
 
     highestGuestNo = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     beds = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     bedrooms = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     bathrooms = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     privateBathroomAvailable = models.IntegerField(
-        default=None
+        default=None,
+        null=True
     )
 
     needHostConfirmation = models.BooleanField(
@@ -116,7 +123,7 @@ class Property(models.Model):
         default=False
     )
 
-    categoryId = models.ForeignKey(
+    category = models.ForeignKey(
         Category,
         null=False,
         on_delete=models.CASCADE
