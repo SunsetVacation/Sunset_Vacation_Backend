@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from core.models import User
-from .models import Category, Hosting
+from .models import Category, Hosting, Property
 from .serializers import CategorySerializer, HostingSerializer, PropertySerializer
 from rest_framework import viewsets
 from django.core import serializers
@@ -56,28 +56,29 @@ class PropertyHostingView(
 
     def post(self, request):
         try:
-            # user = User.objects.get(userId=request.data.get('ownerId'))
             hosting = Hosting.objects.create(title=request.data.get('title'),
                                              description=request.data.get('description'),
                                              maxDaysRefund=request.data.get('maxDaysRefund'),
                                              hostingStartDate=request.data.get('hostingStartDate'),
                                              published=(True if request.data.get('published') is True else False),
-                                             owner_id=request.data.get('owner'))
-        except Hosting.DoesNotExist:
-            Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            # user = User.objects.get(userId=request.data.get('ownerId'))
-            property = Hosting.objects.create(title=request.data.get('title'),
-                                             description=request.data.get('description'),
-                                             maxDaysRefund=request.data.get('maxDaysRefund'),
-                                             hostingStartDate=request.data.get('hostingStartDate'),
-                                             published=(True if request.data.get('published') is True else False),
-                                             owner_id=request.data.get('owner'))
+                                             owner_id=request.data.get('ownerId'))
         except Hosting.DoesNotExist:
             Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
         hosting_serializer = HostingSerializer(hosting)
-        return Response(hosting_serializer.data, status=status.HTTP_201_CREATED)
-
-
-
+        try:
+            # user = User.objects.get(userId=request.data.get('ownerId'))
+            property = Property.objects.create(hosting_id=hosting_serializer.data.get("hostingId"),
+                                               perNightCost=request.data.get('perNightCost'),
+                                               entirePrivateOrShared=request.data.get('maxDaysRefund'),
+                                               highestGuestNo=request.data.get('hostingStartDate'),
+                                               beds=request.data.get('beds'),
+                                               bedrooms=request.data.get('bedrooms'),
+                                               bathrooms=request.data.get('bathrooms'),
+                                               privateBathroomAvailable=request.data.get('privateBathroomAvailable'),
+                                               needHostConfirmation=(True if request.data.get('needHostConfirmation') is True else False),
+                                               partialPayAllowed=(True if request.data.get('partialPayAllowed') is True else False),
+                                               category_id=request.data.get('categoryId'))
+        except Property.DoesNotExist:
+            Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
+        property_serializer = PropertySerializer(property)
+        return Response(property_serializer.data, status=status.HTTP_201_CREATED)

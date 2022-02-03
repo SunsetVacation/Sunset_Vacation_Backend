@@ -46,7 +46,7 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = (
             'hosting',
             'perNightCost',
-            'EntirePrivateOrShared',
+            'entirePrivateOrShared',
             'highestGuestNo',
             'beds',
             'bedrooms',
