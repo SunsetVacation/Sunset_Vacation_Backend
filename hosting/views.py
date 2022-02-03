@@ -65,6 +65,17 @@ class PropertyHostingView(
                                              owner_id=request.data.get('owner'))
         except Hosting.DoesNotExist:
             Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # user = User.objects.get(userId=request.data.get('ownerId'))
+            property = Hosting.objects.create(title=request.data.get('title'),
+                                             description=request.data.get('description'),
+                                             maxDaysRefund=request.data.get('maxDaysRefund'),
+                                             hostingStartDate=request.data.get('hostingStartDate'),
+                                             published=(True if request.data.get('published') is True else False),
+                                             owner_id=request.data.get('owner'))
+        except Hosting.DoesNotExist:
+            Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
         hosting_serializer = HostingSerializer(hosting)
         return Response(hosting_serializer.data, status=status.HTTP_201_CREATED)
 
