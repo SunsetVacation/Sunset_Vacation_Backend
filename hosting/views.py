@@ -47,4 +47,10 @@ def getSubCategories(request):
 #             return Response({"error": "No category to show"}, status=status.HTTP_404_NOT_FOUND)
 #         return Response({'categories': categories, 'success': True}, status=status.HTTP_200_OK)
 
+# class PropertyHostingView(
+#   APIView, # Basic View class provided by the Django Rest Framework
+#   UpdateModelMixin, # Mixin that allows the basic APIView to handle PUT HTTP requests
+#   DestroyModelMixin, # Mixin that allows the basic APIView to handle DELETE HTTP requests
+# ):
+
 

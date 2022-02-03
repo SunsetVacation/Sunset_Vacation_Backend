@@ -33,7 +33,7 @@ class Category(models.Model):
 
 
 class Hosting(models.Model):
-    hosting = models.AutoField(
+    hostingId = models.AutoField(
         primary_key=True
     )
 
