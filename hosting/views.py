@@ -94,10 +94,9 @@ class PropertyHostingView(
         hosting.hosting_start_date = request.data.get('hostingStartDate') if request.data.get('hostingStartDate') else hosting.hosting_start_date
         hosting.published = request.data.get('published') if request.data.get('published') else hosting.published
 
-        try:
-            hosting.save()
-        except Hosting.DoesNotExist:
-            return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        hosting.save()
+
         hosting_serializer = HostingSerializer(hosting)
         try:
             property = Property.objects.get(hosting=hosting_id)
@@ -114,11 +113,21 @@ class PropertyHostingView(
         property.need_host_confirmation = request.data.get('needHostConfirmation') if request.data.get('needHostConfirmation') else property.need_host_confirmation
         property.partial_pay_allowed = request.data.get('partialPayAllowed') if request.data.get('partialPayAllowed') else property.partial_pay_allowed
 
-        try:
-            property.save()
-        except Property.DoesNotExist:
-            return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
+        property.save()
+
         property_serializer = PropertySerializer(property)
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+
+    # def delete(self, request, hosting_id=None, *args, **kwargs):
+    #     try:
+    #         property = Property.objects.get(hosting_id=hosting_id)
+    #     except Property.DoesNotExist:
+    #         return Response({'errors': 'This property does not exist.'}, status=400)
+    #
+    #     # Delete the chosen todo item from the database
+    #     todo_item.delete()
+    #
+    #     # Return a HTTP response notifying that the todo item was successfully deleted
+    #     return Response(status=204)
 
 
