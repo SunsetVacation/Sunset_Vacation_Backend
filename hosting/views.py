@@ -74,10 +74,8 @@ class PropertyHostingView(
                                                bedrooms=request.data.get('bedrooms'),
                                                bathrooms=request.data.get('bathrooms'),
                                                private_bathroom_available=request.data.get('privateBathroomAvailable'),
-                                               need_host_confirmation=(
-                                                   True if request.data.get('needHostConfirmation') is True else False),
-                                               partial_pay_allowed=(
-                                                   True if request.data.get('partialPayAllowed') is True else False),
+                                               need_host_confirmation=(True if request.data.get('needHostConfirmation') is True else False),
+                                               partial_pay_allowed=(True if request.data.get('partialPayAllowed') is True else False),
                                                category_id=request.data.get('categoryId'))
         except Property.DoesNotExist:
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
