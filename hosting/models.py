@@ -130,3 +130,23 @@ class Property(models.Model):
         on_delete=models.CASCADE
     )
 
+
+class Facility(models.Model):
+    facility_id = models.AutoField(
+        primary_key=True
+    )
+
+    facility_name = models.CharField(
+        max_length=45,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+    facility_type = models.CharField(
+        max_length=45,
+        default=None,
+        blank=False,
+        null=True
+    )
+

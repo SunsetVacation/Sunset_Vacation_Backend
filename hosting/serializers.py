@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Hosting, Property
+from .models import Category, Hosting, Property, Facility
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -7,6 +7,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = (
             'category_id', 'category_name', 'subcategory_name', 'description'
+        )
+
+
+class FacilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Facility
+        fields = (
+            'facility_id', 'facility_name', 'facility_type'
         )
 
 
@@ -25,7 +33,6 @@ class HostingSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-
     # def create(self, validated_data):
     #     return Property.objects.create(
     #         hostingId=validated_data.get('hostingId'),

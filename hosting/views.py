@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from core.models import User
-from .models import Category, Hosting, Property
-from .serializers import CategorySerializer, HostingSerializer, PropertySerializer
+from .models import Category, Hosting, Property, Facility
+from .serializers import CategorySerializer, HostingSerializer, PropertySerializer, FacilitySerializer
 from rest_framework import viewsets
 from django.core import serializers
 from rest_framework.decorators import action
@@ -26,26 +26,25 @@ def getCategories(request):
 
 
 @api_view(['GET'])
-def getSubCategories(request, category=None, *arg, **kwargs):
+def getSubcategories(request, category=None, *arg, **kwargs):
     # category = request.data["category"]
     try:
-        sub_categories = Category.objects.all().filter(category_name=category)
+        subcategories = Category.objects.all().filter(category_name=category)
     except Category.DoesNotExist:
         return Response({"error": "No subcategory to show"}, status=status.HTTP_404_NOT_FOUND)
-    sub_categories = CategorySerializer(sub_categories, many=True)
-    return Response({'subcategories': sub_categories.data, 'success': True}, status=status.HTTP_200_OK)
+    subcategories_serializer = CategorySerializer(subcategories, many=True)
+    return Response({'subcategories': subcategories_serializer.data, 'success': True}, status=status.HTTP_200_OK)
 
 
-# class CategoryViewSet(viewsets.ModelViewSet):
-#     category_serializer = CategorySerializer
-#
-#     @action(methods=['GET'], detail=True, url_path='categories')
-#     def getCategories(self, request):
-#         try:
-#             categories = Category.objects.all().values_list('categoryName', flat=True).distinct()
-#         except Category.DoesNotExist:
-#             return Response({"error": "No category to show"}, status=status.HTTP_404_NOT_FOUND)
-#         return Response({'categories': categories, 'success': True}, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def getFacilities(request):
+    try:
+        facilities = Facility.objects.all()
+    except Facility.DoesNotExist:
+        return Response({"error": "No facility to show"}, status=status.HTTP_404_NOT_FOUND)
+    facilities_serializer = FacilitySerializer(facilities, many=True)
+    return Response({'facilities': facilities_serializer.data}, status=status.HTTP_200_OK)
+
 
 class PropertyHostingView(
     APIView,
@@ -159,7 +158,8 @@ class PropertyHostingView(
             except Hosting.DoesNotExist:
                 return Response({'errors': 'This hosting does not exist.'}, status=400)
             hosting_serializer = HostingSerializer(hosting)
-            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                            status=status.HTTP_200_OK)
         else:
             try:
                 property = Property.objects.all()
@@ -171,4 +171,5 @@ class PropertyHostingView(
             except Hosting.DoesNotExist:
                 return Response({'errors': 'This hosting does not exist.'}, status=400)
             hosting_serializer = HostingSerializer(hosting, many=True)
-            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                            status=status.HTTP_200_OK)
