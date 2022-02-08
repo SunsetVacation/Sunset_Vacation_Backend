@@ -147,16 +147,28 @@ class PropertyHostingView(
 
         return Response(status=status.HTTP_200_OK)
 
-    # def get(self, request, hosting_id=None, *args, **kwargs):
-    #     if hosting_id:
-    #         try:
-    #             property = Property.objects.get(hosting_id=hosting_id)
-    #         except Property.DoesNotExist:
-    #             return Response({'errors': 'This property does not exist.'}, status=400)
-    #
-    #         try:
-    #             hosting = Hosting.objects.get(hosting_id=hosting_id)
-    #         except Hosting.DoesNotExist:
-    #             return Response({'errors': 'This hosting does not exist.'}, status=400)
-    #
-    #         return Response({"hosting": hosting, "property": property}, status=status.HTTP_200_OK)
+    def get(self, request, hosting_id=None, *args, **kwargs):
+        if hosting_id:
+            try:
+                property = Property.objects.get(hosting_id=hosting_id)
+            except Property.DoesNotExist:
+                return Response({'errors': 'This property does not exist.'}, status=400)
+            property_serializer = PropertySerializer(property)
+            try:
+                hosting = Hosting.objects.get(hosting_id=hosting_id)
+            except Hosting.DoesNotExist:
+                return Response({'errors': 'This hosting does not exist.'}, status=400)
+            hosting_serializer = HostingSerializer(hosting)
+            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+        else:
+            try:
+                property = Property.objects.all()
+            except Property.DoesNotExist:
+                return Response({'errors': 'This property does not exist.'}, status=400)
+            property_serializer = PropertySerializer(property, many=True)
+            try:
+                hosting = Hosting.objects.all()
+            except Hosting.DoesNotExist:
+                return Response({'errors': 'This hosting does not exist.'}, status=400)
+            hosting_serializer = HostingSerializer(hosting, many=True)
+            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
