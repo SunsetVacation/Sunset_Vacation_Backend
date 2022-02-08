@@ -74,13 +74,16 @@ class PropertyHostingView(
                                                bedrooms=request.data.get('bedrooms'),
                                                bathrooms=request.data.get('bathrooms'),
                                                private_bathroom_available=request.data.get('privateBathroomAvailable'),
-                                               need_host_confirmation=(True if request.data.get('needHostConfirmation') is True else False),
-                                               partial_pay_allowed=(True if request.data.get('partialPayAllowed') is True else False),
+                                               need_host_confirmation=(
+                                                   True if request.data.get('needHostConfirmation') is True else False),
+                                               partial_pay_allowed=(
+                                                   True if request.data.get('partialPayAllowed') is True else False),
                                                category_id=request.data.get('categoryId'))
         except Property.DoesNotExist:
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
         property_serializer = PropertySerializer(property)
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                        status=status.HTTP_201_CREATED)
 
     def put(self, request, hosting_id=None, *args, **kwargs):
         try:
@@ -89,11 +92,13 @@ class PropertyHostingView(
             return Response({'errors': 'This hosting does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
 
         hosting.title = request.data.get('title') if request.data.get('title') else hosting.title
-        hosting.description = request.data.get('description') if request.data.get('description') else hosting.description
-        hosting.max_days_refund = request.data.get('maxDaysRefund') if request.data.get('maxDaysRefund') else hosting.max_days_refund
-        hosting.hosting_start_date = request.data.get('hostingStartDate') if request.data.get('hostingStartDate') else hosting.hosting_start_date
+        hosting.description = request.data.get('description') if request.data.get(
+            'description') else hosting.description
+        hosting.max_days_refund = request.data.get('maxDaysRefund') if request.data.get(
+            'maxDaysRefund') else hosting.max_days_refund
+        hosting.hosting_start_date = request.data.get('hostingStartDate') if request.data.get(
+            'hostingStartDate') else hosting.hosting_start_date
         hosting.published = request.data.get('published') if request.data.get('published') else hosting.published
-
 
         hosting.save()
 
@@ -103,31 +108,55 @@ class PropertyHostingView(
         except Property.DoesNotExist:
             return Response({'errors': 'This property does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        property.per_night_cost = request.data.get('perNightCost') if request.data.get('perNightCost') else property.per_night_cost
-        property.entire_private_or_shared = request.data.get('entirePrivateOrShared') if request.data.get('entirePrivateOrShared') else property.entire_private_or_shared
-        property.highest_guest_no = request.data.get('highest_guest_no') if request.data.get('highest_guest_no') else property.highest_guest_no
+        property.per_night_cost = request.data.get('perNightCost') if request.data.get(
+            'perNightCost') else property.per_night_cost
+        property.entire_private_or_shared = request.data.get('entirePrivateOrShared') if request.data.get(
+            'entirePrivateOrShared') else property.entire_private_or_shared
+        property.highest_guest_no = request.data.get('highest_guest_no') if request.data.get(
+            'highest_guest_no') else property.highest_guest_no
         property.beds = request.data.get('beds') if request.data.get('beds') else property.beds
         property.bedrooms = request.data.get('bedrooms') if request.data.get('bedrooms') else property.bedrooms
         property.bathrooms = request.data.get('bathrooms') if request.data.get('bathrooms') else property.bathrooms
-        property.private_bathroom_available = request.data.get('privateBathroomAvailable') if request.data.get('privateBathroomAvailable') else property.private_bathroom_available
-        property.need_host_confirmation = request.data.get('needHostConfirmation') if request.data.get('needHostConfirmation') else property.need_host_confirmation
-        property.partial_pay_allowed = request.data.get('partialPayAllowed') if request.data.get('partialPayAllowed') else property.partial_pay_allowed
+        property.private_bathroom_available = request.data.get('privateBathroomAvailable') if request.data.get(
+            'privateBathroomAvailable') else property.private_bathroom_available
+        property.need_host_confirmation = request.data.get('needHostConfirmation') if request.data.get(
+            'needHostConfirmation') else property.need_host_confirmation
+        property.partial_pay_allowed = request.data.get('partialPayAllowed') if request.data.get(
+            'partialPayAllowed') else property.partial_pay_allowed
 
         property.save()
 
         property_serializer = PropertySerializer(property)
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                        status=status.HTTP_200_OK)
 
-    # def delete(self, request, hosting_id=None, *args, **kwargs):
-    #     try:
-    #         property = Property.objects.get(hosting_id=hosting_id)
-    #     except Property.DoesNotExist:
-    #         return Response({'errors': 'This property does not exist.'}, status=400)
+    def delete(self, request, hosting_id=None, *args, **kwargs):
+        try:
+            property = Property.objects.get(hosting_id=hosting_id)
+        except Property.DoesNotExist:
+            return Response({'errors': 'This property does not exist.'}, status=400)
+
+        property.delete()
+
+        try:
+            hosting = Hosting.objects.get(hosting_id=hosting_id)
+        except Hosting.DoesNotExist:
+            return Response({'errors': 'This hosting does not exist.'}, status=400)
+
+        hosting.delete()
+
+        return Response(status=status.HTTP_200_OK)
+
+    # def get(self, request, hosting_id=None, *args, **kwargs):
+    #     if hosting_id:
+    #         try:
+    #             property = Property.objects.get(hosting_id=hosting_id)
+    #         except Property.DoesNotExist:
+    #             return Response({'errors': 'This property does not exist.'}, status=400)
     #
-    #     # Delete the chosen todo item from the database
-    #     todo_item.delete()
+    #         try:
+    #             hosting = Hosting.objects.get(hosting_id=hosting_id)
+    #         except Hosting.DoesNotExist:
+    #             return Response({'errors': 'This hosting does not exist.'}, status=400)
     #
-    #     # Return a HTTP response notifying that the todo item was successfully deleted
-    #     return Response(status=204)
-
-
+    #         return Response({"hosting": hosting, "property": property}, status=status.HTTP_200_OK)
