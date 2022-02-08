@@ -2,11 +2,11 @@ from django.db import models
 
 
 class Address(models.Model):
-    addressId = models.AutoField(
+    address_id = models.AutoField(
         primary_key=True
     )
 
-    houseNo = models.IntegerField(
+    house_no = models.IntegerField(
         default=None,
     )
 
@@ -17,7 +17,7 @@ class Address(models.Model):
         null=True
     )
 
-    zipCode = models.IntegerField(
+    zipcode = models.IntegerField(
         default=None,
     )
 
@@ -30,18 +30,18 @@ class Address(models.Model):
 
 
 class User(models.Model):
-    userId = models.AutoField(
+    user_id = models.AutoField(
         primary_key=True
     )
 
-    firstName = models.CharField(
+    firstname = models.CharField(
         max_length=100,
         default=None,
         blank=False,
         null=True
     )
 
-    lastName = models.CharField(
+    lastname = models.CharField(
         max_length=100,
         default=None,
         blank=False,
@@ -56,7 +56,7 @@ class User(models.Model):
         unique=True
     )
 
-    phoneNo = models.CharField(
+    phone_no = models.CharField(
         max_length=20,
         default=None,
         blank=False,

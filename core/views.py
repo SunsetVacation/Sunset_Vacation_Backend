@@ -23,9 +23,9 @@ def login(request):
     if user.password != password:
         return Response({"error": "Password did not match"}, status=status.HTTP_401_UNAUTHORIZED)
     if not user.host:
-        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False, "success": True}, status=status.HTTP_200_OK)
+        return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": False, "success": True}, status=status.HTTP_200_OK)
     try:
-        Hosting.objects.get(ownerId=user.userId, published=False)
+        Hosting.objects.get(ownerId=user.user_id, published=False)
     except Hosting.DoesNotExist:
-        return Response({"user": user.userId, "host": user.host, "unpublishedHosting": False, "success": True})
-    return Response({"user": user.userId, "host": user.host, "unpublishedHosting": True, "success": True}, status=status.HTTP_200_OK)
+        return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": False, "success": True})
+    return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": True, "success": True}, status=status.HTTP_200_OK)

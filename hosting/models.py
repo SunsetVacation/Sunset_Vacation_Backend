@@ -6,18 +6,18 @@ from core.models import User
 
 
 class Category(models.Model):
-    categoryId = models.AutoField(
+    category_id = models.AutoField(
         primary_key=True
     )
 
-    categoryName = models.CharField(
+    category_name = models.CharField(
         max_length=100,
         default=None,
         blank=False,
         null=True
     )
 
-    subCategoryName = models.CharField(
+    subcategory_name = models.CharField(
         max_length=100,
         default=None,
         blank=False,
@@ -33,7 +33,7 @@ class Category(models.Model):
 
 
 class Hosting(models.Model):
-    hostingId = models.AutoField(
+    hosting_id = models.AutoField(
         primary_key=True
     )
 
@@ -51,12 +51,12 @@ class Hosting(models.Model):
         null=True
     )
 
-    maxDaysRefund = models.IntegerField(
+    max_days_refund = models.IntegerField(
         default=None,
         null=True
     )
 
-    hostingStartDate = models.DateField(
+    hosting_start_date = models.DateField(
         default=None,
         null=True
     )
@@ -76,21 +76,22 @@ class Property(models.Model):
     hosting = models.ForeignKey(
         Hosting,
         null=False,
-        on_delete= models.CASCADE
+        on_delete=models.CASCADE,
+        primary_key=True
     )
 
-    perNightCost = models.IntegerField(
+    per_night_cost = models.IntegerField(
         default=None,
         null=True
     )
 
-    entirePrivateOrShared = models.CharField(
+    entire_private_or_shared = models.CharField(
         max_length=20,
         blank=False,
         null=True
     )
 
-    highestGuestNo = models.IntegerField(
+    highest_guest_no = models.IntegerField(
         default=None,
         null=True
     )
@@ -110,16 +111,16 @@ class Property(models.Model):
         null=True
     )
 
-    privateBathroomAvailable = models.IntegerField(
+    private_bathroom_available = models.IntegerField(
         default=None,
         null=True
     )
 
-    needHostConfirmation = models.BooleanField(
+    need_host_confirmation = models.BooleanField(
         default=False
     )
 
-    partialPayAllowed = models.BooleanField(
+    partial_pay_allowed = models.BooleanField(
         default=False
     )
 

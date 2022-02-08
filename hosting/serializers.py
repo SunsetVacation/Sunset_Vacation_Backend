@@ -6,7 +6,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
-            'categoryId', 'categoryName', 'subCategoryName', 'description'
+            'category_id', 'category_name', 'subcategory_name', 'description'
         )
 
 
@@ -14,11 +14,11 @@ class HostingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hosting
         fields = (
-            'hostingId',
+            'hosting_id',
             'title',
             'description',
-            'maxDaysRefund',
-            'hostingStartDate',
+            'max_days_refund',
+            'hosting_start_date',
             'published',
             'owner'
         )
@@ -45,14 +45,14 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = (
             'hosting',
-            'perNightCost',
-            'entirePrivateOrShared',
-            'highestGuestNo',
+            'per_night_cost',
+            'entire_private_or_shared',
+            'highest_guest_no',
             'beds',
             'bedrooms',
             'bathrooms',
-            'privateBathroomAvailable',
-            'needHostConfirmation',
-            'partialPayAllowed',
+            'private_bathroom_available',
+            'need_host_confirmation',
+            'partial_pay_allowed',
             'category'
         )
