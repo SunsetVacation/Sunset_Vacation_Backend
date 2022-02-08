@@ -82,43 +82,43 @@ class PropertyHostingView(
         property_serializer = PropertySerializer(property)
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_201_CREATED)
 
-    # def put(self, request, hosting_id=None, *args, **kwargs):
-    #     try:
-    #         hosting = Hosting.objects.get(hosting_id=hosting_id)
-    #     except Hosting.DoesNotExist:
-    #         return Response({'errors': 'This hosting does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-    #
-    #     hosting.title = request.data.get('title') if request.data.get('title') else hosting.title
-    #     hosting.description = request.data.get('description') if request.data.get('description') else hosting.description
-    #     hosting.max_days_refund = request.data.get('maxDaysRefund') if request.data.get('maxDaysRefund') else hosting.max_days_refund
-    #     hosting.hosting_start_date = request.data.get('hostingStartDate') if request.data.get('hostingStartDate') else hosting.hosting_start_date
-    #     hosting.published = request.data.get('published') if request.data.get('published') else hosting.published
-    #
-    #     try:
-    #         hosting.save()
-    #     except Hosting.DoesNotExist:
-    #         return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     hosting_serializer = HostingSerializer(hosting)
-    #     try:
-    #         property = Property.objects.get(hosting=hosting_id)
-    #     except Property.DoesNotExist:
-    #         return Response({'errors': 'This property does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-    #
-    #     property.per_night_cost = request.data.get('perNightCost') if request.data.get('perNightCost') else property.per_night_cost
-    #     property.entire_private_or_shared = request.data.get('entirePrivateOrShared') if request.data.get('entirePrivateOrShared') else property.entire_private_or_shared
-    #     property.highest_guest_no = request.data.get('highest_guest_no') if request.data.get('highest_guest_no') else property.highest_guest_no
-    #     property.beds = request.data.get('beds') if request.data.get('beds') else property.beds
-    #     property.bedrooms = request.data.get('bedrooms') if request.data.get('bedrooms') else property.bedrooms
-    #     property.bathrooms = request.data.get('bathrooms') if request.data.get('bathrooms') else property.bathrooms
-    #     property.private_bathroom_available = request.data.get('privateBathroomAvailable') if request.data.get('privateBathroomAvailable') else property.private_bathroom_available
-    #     property.need_host_confirmation = request.data.get('needHostConfirmation') if request.data.get('needHostConfirmation') else property.need_host_confirmation
-    #     property.partial_pay_allowed = request.data.get('partialPayAllowed') if request.data.get('partialPayAllowed') else property.partial_pay_allowed
-    #
-    #     try:
-    #         property.save()
-    #     except Property.DoesNotExist:
-    #         return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     property_serializer = PropertySerializer(property)
-    #     return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
+    def put(self, request, hosting_id=None, *args, **kwargs):
+        try:
+            hosting = Hosting.objects.get(hosting_id=hosting_id)
+        except Hosting.DoesNotExist:
+            return Response({'errors': 'This hosting does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        hosting.title = request.data.get('title') if request.data.get('title') else hosting.title
+        hosting.description = request.data.get('description') if request.data.get('description') else hosting.description
+        hosting.max_days_refund = request.data.get('maxDaysRefund') if request.data.get('maxDaysRefund') else hosting.max_days_refund
+        hosting.hosting_start_date = request.data.get('hostingStartDate') if request.data.get('hostingStartDate') else hosting.hosting_start_date
+        hosting.published = request.data.get('published') if request.data.get('published') else hosting.published
+
+        try:
+            hosting.save()
+        except Hosting.DoesNotExist:
+            return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
+        hosting_serializer = HostingSerializer(hosting)
+        try:
+            property = Property.objects.get(hosting=hosting_id)
+        except Property.DoesNotExist:
+            return Response({'errors': 'This property does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        property.per_night_cost = request.data.get('perNightCost') if request.data.get('perNightCost') else property.per_night_cost
+        property.entire_private_or_shared = request.data.get('entirePrivateOrShared') if request.data.get('entirePrivateOrShared') else property.entire_private_or_shared
+        property.highest_guest_no = request.data.get('highest_guest_no') if request.data.get('highest_guest_no') else property.highest_guest_no
+        property.beds = request.data.get('beds') if request.data.get('beds') else property.beds
+        property.bedrooms = request.data.get('bedrooms') if request.data.get('bedrooms') else property.bedrooms
+        property.bathrooms = request.data.get('bathrooms') if request.data.get('bathrooms') else property.bathrooms
+        property.private_bathroom_available = request.data.get('privateBathroomAvailable') if request.data.get('privateBathroomAvailable') else property.private_bathroom_available
+        property.need_host_confirmation = request.data.get('needHostConfirmation') if request.data.get('needHostConfirmation') else property.need_host_confirmation
+        property.partial_pay_allowed = request.data.get('partialPayAllowed') if request.data.get('partialPayAllowed') else property.partial_pay_allowed
+
+        try:
+            property.save()
+        except Property.DoesNotExist:
+            return Response({'errors': 'Could not update hosting.'}, status=status.HTTP_400_BAD_REQUEST)
+        property_serializer = PropertySerializer(property)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data}, status=status.HTTP_200_OK)
 
 
