@@ -10,7 +10,6 @@ from rest_framework import viewsets
 from django.core import serializers
 from rest_framework.decorators import action
 
-# from .serializers import UserSerializer
 from rest_framework import status
 import json
 import requests
@@ -46,7 +45,7 @@ def getFacilities(request):
     return Response({'facilities': facilities_serializer.data}, status=status.HTTP_200_OK)
 
 
-class PropertyHostingView(
+class PropertyHostingTestView(
     APIView,
     UpdateModelMixin,
     DestroyModelMixin,
@@ -173,3 +172,32 @@ class PropertyHostingView(
             hosting_serializer = HostingSerializer(hosting, many=True)
             return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
                             status=status.HTTP_200_OK)
+
+
+class PropertyHostingView(
+    APIView,
+    UpdateModelMixin,
+    DestroyModelMixin,
+):
+    def post(self, request):
+        hosting_serializer = HostingSerializer(data=request.data)
+        if hosting_serializer.is_valid():
+            hosting = hosting_serializer.save()
+        else:
+            return Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
+        request.data["hosting_id"] = hosting.hosting_id
+        property_serializer = PropertySerializer(data=request.data)
+        if property_serializer.is_valid():
+            property = property_serializer.save()
+        else:
+            print(hosting_serializer.error_messages)
+            print(hosting_serializer.errors)
+            hosting.delete()
+            return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
+        hosting_serializer = HostingSerializer(hosting)
+        property_serializer = PropertySerializer(property)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                        status=status.HTTP_201_CREATED)
+
+
+

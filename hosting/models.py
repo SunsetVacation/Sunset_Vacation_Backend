@@ -87,6 +87,7 @@ class Property(models.Model):
 
     entire_private_or_shared = models.CharField(
         max_length=20,
+        default=None,
         blank=False,
         null=True
     )
