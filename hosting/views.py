@@ -183,21 +183,49 @@ class PropertyHostingView(
         hosting_serializer = HostingSerializer(data=request.data)
         if hosting_serializer.is_valid():
             hosting = hosting_serializer.save()
+            hosting_serializer = HostingSerializer(hosting)
         else:
             return Response({"error": "Hosting creation error"}, status=status.HTTP_400_BAD_REQUEST)
         request.data["hosting_id"] = hosting.hosting_id
         property_serializer = PropertySerializer(data=request.data)
         if property_serializer.is_valid():
             property = property_serializer.save()
+            property_serializer = PropertySerializer(property)
         else:
-            print(hosting_serializer.error_messages)
-            print(hosting_serializer.errors)
             hosting.delete()
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
-        hosting_serializer = HostingSerializer(hosting)
-        property_serializer = PropertySerializer(property)
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
                         status=status.HTTP_201_CREATED)
+
+    def put(self, request, hosting_id=None, *args, **kwargs):
+        try:
+            hosting = Hosting.objects.get(hosting_id=hosting_id)
+        except Hosting.DoesNotExist:
+            return Response({'errors': 'This hosting does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        hosting_serializer = HostingSerializer(hosting, data=request.data)
+        if hosting_serializer.is_valid():
+            hosting = hosting_serializer.save()
+            hosting_serializer = HostingSerializer(hosting)
+        else:
+            return Response({'errors': 'Hosting update failed'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            property = Property.objects.get(hosting_id=hosting_id)
+        except Property.DoesNotExist:
+            return Response({'errors': 'This property does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        property_serializer = PropertySerializer(property, data=request.data)
+        if property_serializer.is_valid():
+            property = property_serializer.save()
+            property_serializer = PropertySerializer(property)
+        else:
+            print(property_serializer.errors)
+            print(property_serializer.error_messages)
+            return Response({'errors': 'Property update failed'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+                        status=status.HTTP_200_OK)
 
     def get(self, request, hosting_id=None, *args, **kwargs):
         if hosting_id:
@@ -227,3 +255,19 @@ class PropertyHostingView(
             return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
                             status=status.HTTP_200_OK)
 
+    def delete(self, request, hosting_id=None, *args, **kwargs):
+        try:
+            property = Property.objects.get(hosting_id=hosting_id)
+        except Property.DoesNotExist:
+            return Response({'errors': 'This property does not exist.'}, status=400)
+
+        property.delete()
+
+        try:
+            hosting = Hosting.objects.get(hosting_id=hosting_id)
+        except Hosting.DoesNotExist:
+            return Response({'errors': 'This hosting does not exist.'}, status=400)
+
+        hosting.delete()
+
+        return Response(status=status.HTTP_200_OK)

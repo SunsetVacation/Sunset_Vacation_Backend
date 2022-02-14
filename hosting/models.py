@@ -127,7 +127,7 @@ class Property(models.Model):
 
     category = models.ForeignKey(
         Category,
-        null=False,
+        null=True,
         on_delete=models.CASCADE
     )
 
