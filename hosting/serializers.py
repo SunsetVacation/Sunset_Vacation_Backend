@@ -143,7 +143,7 @@ class PropertySerializer(serializers.ModelSerializer):
         property.private_bathroom_available = validated_data.get('private_bathroom_available') if validated_data.get('private_bathroom_available') else property.private_bathroom_available
         property.need_host_confirmation = validated_data.get('need_host_confirmation') if validated_data.get('need_host_confirmation') else property.need_host_confirmation
         property.partial_pay_allowed = validated_data.get('partial_pay_allowed') if validated_data.get('partial_pay_allowed') else property.partial_pay_allowed
-        property.category_id = validated_data.get('category_id') if  validated_data.get('category_id') else property.category_id
+        property.category_id = validated_data.get('category_id') if validated_data.get('category_id') else property.category_id
         property.save()
         return property
 
