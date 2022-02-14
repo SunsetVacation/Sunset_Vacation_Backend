@@ -5,6 +5,7 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from .models import Categories
 from django.core import serializers
+from .serializers import CategorySerializer
 
 # from .serializers import UserSerializer
 from rest_framework import status
@@ -19,8 +20,15 @@ def getCategories(request):
     return Response({'categories': categories, 'success': True}, status=status.HTTP_200_OK)
 
 
+# @api_view(['POST'])
+# def getSubCategories(request):
+#     category = request.data["category"]
+#     sub_categories = Categories.objects.filter(categoryName=category)
+#     return Response({'subcategories': sub_categories, 'success': True}, status=status.HTTP_200_OK)
+
 @api_view(['POST'])
 def getSubCategories(request):
     category = request.data["category"]
-    sub_categories = Categories.objects.filter(categoryName=category)
-    return Response({'subcategories': sub_categories, 'success': True}, status=status.HTTP_200_OK)
+    subCategories = Categories.objects.filter(categoryName=category)
+    categorySerializer = CategorySerializer(subCategories, many=True)
+    return Response({'subcategories' : categorySerializer.data, 'success': True}, status=status.HTTP_200_OK)
