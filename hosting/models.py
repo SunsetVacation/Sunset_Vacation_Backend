@@ -166,29 +166,29 @@ class Property_Facilities(models.Model):
     )
 
 
-# class Location(models.Model):
-#     location_id = models.AutoField(
-#         primary_key=True
-#     )
-#
-#     longitude = models.FloatField(
-#         default=None,
-#         null=True
-#     )
-#
-#     latitude = models.FloatField(
-#         default=None,
-#         null=True
-#     )
-#
-#     address = models.CharField(
-#         max_length=200,
-#         default=None,
-#         blank=False,
-#         null=True
-#     )
-#
-#
+class Location(models.Model):
+    location_id = models.AutoField(
+        primary_key=True
+    )
+
+    longitude = models.FloatField(
+        default=None,
+        null=True
+    )
+
+    latitude = models.FloatField(
+        default=None,
+        null=True
+    )
+
+    address = models.CharField(
+        max_length=200,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+
 # class Property_Images(models.Model):
 #     hosting = models.ForeignKey(
 #         Hosting,
