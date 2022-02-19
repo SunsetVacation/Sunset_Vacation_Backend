@@ -191,6 +191,13 @@ class LocationSerializer(serializers.ModelSerializer):
             address=validated_data.get("address")
         )
 
+    def update(self, location, validated_data):
+        location.longitude = validated_data.get('longitude') if validated_data.get('longitude') else location.longitude
+        location.latitude = validated_data.get('latitude') if validated_data.get('latitude') else location.latitude
+        location.address = validated_data.get('address') if validated_data.get('address') else location.address
+        location.save()
+        return location
+
     class Meta:
         model = Location
         fields = (
