@@ -131,23 +131,23 @@ class PropertyHostingView(
             print(property_serializer.error_messages)
             return Response({'errors': 'Property update failed'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # try:
-        #     location = Location.objects.get(hosting_id=hosting_id)
-        # except Location.DoesNotExist:
-        #     return Response({'errors': 'This location does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-        #
-        # location_serializer = locationSerializer(property, data=request.data)
-        # if property_serializer.is_valid():
-        #     property = property_serializer.save()
-        #     property_serializer = PropertySerializer(property)
-        # else:
-        #     print(property_serializer.errors)
-        #     print(property_serializer.error_messages)
-        #     return Response({'errors': 'Property update failed'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            location = Location.objects.get(hosting_id=hosting_id)
+        except Location.DoesNotExist:
+            return Response({'errors': 'This location does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        location_serializer = LocationSerializer(location, data=request.data)
+        if location_serializer.is_valid():
+            location = location_serializer.save()
+            location_serializer = LocationSerializer(location)
+        else:
+            print(location_serializer.errors)
+            print(location_serializer.error_messages)
+            return Response({'errors': 'location update failed'}, status=status.HTTP_400_BAD_REQUEST)
 
         # facilities = Property_Facilities.objects.all().filter
 
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "location": location_serializer.data},
                         status=status.HTTP_200_OK)
 
     def get(self, request, hosting_id=None, *args, **kwargs):
