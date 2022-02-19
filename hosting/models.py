@@ -195,15 +195,15 @@ class Location(models.Model):
     )
 
 
-# class Property_Images(models.Model):
-#     hosting = models.ForeignKey(
-#         Hosting,
-#         on_delete=models.CASCADE,
-#         null=False
-#     )
-#
-#     link = models.CharField(
-#         default=None,
-#         null=True,
-#         max_length=300
-#     )
+class Property_Images(models.Model):
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    link = models.CharField(
+        default=None,
+        null=True,
+        max_length=300
+    )

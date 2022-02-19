@@ -94,11 +94,11 @@ class PropertyHostingView(
         # images = request.data["images"]
         # print(request.data['images'])
         # for image in images:
-            # try:
-            #     new_prop_facility = Property_Images(hosting=hosting,link=image["src"])
-            #     new_prop_facility.save()
-            # except Facility.DoesNotExist:
-            #     return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
+        #     try:
+        #         new_prop_facility = Property_Images(hosting=hosting,link=image["src"])
+        #         new_prop_facility.save()
+        #     except Facility.DoesNotExist:
+        #         return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "facility": new_prop_facility_serializer.data, "location": location_serializer.data},
                         status=status.HTTP_201_CREATED)
