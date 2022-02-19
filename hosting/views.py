@@ -63,6 +63,8 @@ class PropertyHostingView(
             property = property_serializer.save()
             property_serializer = PropertySerializer(property)
         else:
+            print(property_serializer.errors)
+            print(property_serializer.error_messages)
             hosting.delete()
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
