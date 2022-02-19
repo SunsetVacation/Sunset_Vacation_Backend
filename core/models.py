@@ -81,3 +81,8 @@ class User(models.Model):
     )
 
 
+class PhotoUpload(models.Model):
+    image = models.ImageField(upload_to='images')
+    
+    def __str__(self):
+        return self.title

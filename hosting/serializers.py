@@ -1,5 +1,8 @@
+from dataclasses import field, fields
+from importlib.metadata import requires
+# from typing_extensions import Required
 from rest_framework import serializers
-from .models import Category, Hosting, Property, Facility
+from .models import Category, Hosting, Property, Facility, PropertyFacilities
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -114,4 +117,43 @@ class PropertySerializer(serializers.ModelSerializer):
             'need_host_confirmation',
             'partial_pay_allowed',
             'category_id'
+        )
+
+
+# class PropertyFacilitiesSerializer(serializers.ModelSerializer):
+#     property_facility_id = serializers.IntegerField(required=False)
+#     hosting = serializers.IntegerField(required=False)
+#     facility = serializers.IntegerField(required=False)
+
+#     def create(self, validated_data):
+#         return PropertyFacilities.objects.create(
+#             property_facility_id=validated_data.get('property_facility_id'),
+#             hosting=validated_data.get('hosting'),
+#             facility=validated_data.get('facility')
+#         )
+
+#     def update(self, property_facilities, validated_data):
+#         property_facilities.property_facility_id = validated_data.get('property_facility_id') if validated_data.get('property_facility_id') else  property_facilities.property_facility_id
+#         property_facilities.hosting = validated_data.get('hosting') if validated_data.get('hosting') else property_facilities.hosting
+#         property_facilities.facility = validated_data.get('facility') if validated_data.get('facility') else property_facilities.facility
+#         property_facilities.save()
+#         return property_facilities
+
+    
+#     class Meta:
+#         model = PropertyFacilities
+#         fields = (
+#             "property_facility_id",
+#             "hosting",
+#             "facility"
+#         )
+
+
+
+class PropertyFacilitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyFacilities
+        fields = (
+            "hosting",
+            "facility"
         )

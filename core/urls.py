@@ -7,5 +7,5 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('login/', views.login, name="login"),
-
+    path('photo-upload/', views.photoUpload, name="photoupload"),
 ]

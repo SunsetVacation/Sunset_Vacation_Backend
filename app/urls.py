@@ -16,6 +16,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from .settings import MEDIA_ROOT, MEDIA_URL
+
 
 
 urlpatterns = [
@@ -23,3 +26,5 @@ urlpatterns = [
     path('users/', include('core.urls')),
     path('hostings/', include('hosting.urls')),
 ]
+
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
