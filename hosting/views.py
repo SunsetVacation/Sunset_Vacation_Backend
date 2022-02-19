@@ -192,7 +192,13 @@ class PropertyHostingView(
             except Hosting.DoesNotExist:
                 return Response({'errors': 'This hosting does not exist.'}, status=400)
             hosting_serializer = HostingSerializer(hosting)
-            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+            location = Location.objects.get(hosting_id=hosting_id)
+            location_serializer = LocationSerializer(location)
+            images = Property_Images.objects.all().filter(hosting_id=hosting_id)
+            images_serializer = PropertyImagesSerializer(images, many=True)
+            facilities = Property_Facilities.objects.all().filter(hosting_id=hosting_id)
+            facilities_serializer = PropertyFacilitiesSerializer(facilities, many=True)
+            return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "location": location_serializer.data, "facilities": facilities_serializer.data, "images": images_serializer.data},
                             status=status.HTTP_200_OK)
         else:
             try:
