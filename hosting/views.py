@@ -145,9 +145,39 @@ class PropertyHostingView(
             print(location_serializer.error_messages)
             return Response({'errors': 'location update failed'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # facilities = Property_Facilities.objects.all().filter
+        keys = []
+        for key in request.data.keys():
+            keys.append(key)
 
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "location": location_serializer.data},
+        if "facilities" in keys:
+            old_facilities = Property_Facilities.objects.all().filter(hosting_id=hosting_id)
+            old_facilities.delete()
+            facilities = request.data["facilities"]
+            print(facilities)
+            for id in facilities:
+                try:
+                    facility = Facility.objects.get(facility_id=id)
+                    new_prop_facility = Property_Facilities(hosting=hosting, facility=facility)
+                    new_prop_facility.save()
+                except Facility.DoesNotExist:
+                    return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
+
+        if "images" in keys:
+            old_images = Property_Images.objects.all().filter(hosting_id=hosting_id)
+            old_images.delete()
+            images = request.data["images"]
+            print(request.data['images'])
+            for image in images:
+                try:
+                    new_prop_image = Property_Images(hosting=hosting, link=image["src"])
+                    new_prop_image.save()
+                except Property_Images.DoesNotExist:
+                    return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
+        facilities = Property_Facilities.objects.all().filter(hosting_id=hosting.hosting_id)
+        facilities_serializer = PropertyFacilitiesSerializer(facilities, many=True)
+        images = Property_Images.objects.all().filter(hosting_id=hosting.hosting_id)
+        images_serializer = PropertyImagesSerializer(images, many=True)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "location": location_serializer.data, "facilities": facilities_serializer.data, "images": images_serializer.data},
                         status=status.HTTP_200_OK)
 
     def get(self, request, hosting_id=None, *args, **kwargs):
