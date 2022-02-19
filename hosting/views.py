@@ -209,6 +209,12 @@ class PropertyHostingView(
                             status=status.HTTP_200_OK)
 
     def delete(self, request, hosting_id=None, *args, **kwargs):
+        images = Property_Images.objects.all().filter(hosting_id=hosting_id)
+        images.delete()
+        facilities = Property_Facilities.objects.all().filter(hosting_id=hosting_id)
+        facilities.delete()
+        location = Location.objects.get(hosting_id=hosting_id)
+        location.delete()
         try:
             property = Property.objects.get(hosting_id=hosting_id)
         except Property.DoesNotExist:
