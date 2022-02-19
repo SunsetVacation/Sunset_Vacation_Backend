@@ -168,6 +168,15 @@ class PropertyFacilitiesSerializer(serializers.ModelSerializer):
         )
 
 
+class PropertyImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property_Facilities
+        fields = (
+            "hosting",
+            "link"
+        )
+
+
 class LocationSerializer(serializers.ModelSerializer):
     hosting_id = serializers.IntegerField(required=False)
     longitude = serializers.FloatField(required=False)
@@ -190,4 +199,5 @@ class LocationSerializer(serializers.ModelSerializer):
             "latitude",
             "address"
         )
+
 
