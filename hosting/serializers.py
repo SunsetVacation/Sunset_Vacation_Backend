@@ -2,7 +2,7 @@ from dataclasses import field, fields
 from importlib.metadata import requires
 # from typing_extensions import Required
 from rest_framework import serializers
-from .models import Category, Hosting, Property, Facility, Property_Facilities
+from .models import Category, Hosting, Property, Facility, Property_Facilities, Location
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -165,5 +165,29 @@ class PropertyFacilitiesSerializer(serializers.ModelSerializer):
         fields = (
             "hosting",
             "facility"
+        )
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    hosting_id = serializers.IntegerField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
+    address = serializers.CharField(required=False)
+
+    def create(self, validated_data):
+        return Location.objects.create(
+            hosting_id=validated_data.get("hosting_id"),
+            longitude=validated_data.get("longitude"),
+            latitude=validated_data.get("latitude"),
+            address=validated_data.get("address")
+        )
+
+    class Meta:
+        model = Location
+        fields = (
+            "hosting_id",
+            "longitude",
+            "latitude",
+            "address"
         )
 

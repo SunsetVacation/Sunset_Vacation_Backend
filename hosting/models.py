@@ -171,6 +171,12 @@ class Location(models.Model):
         primary_key=True
     )
 
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
     longitude = models.FloatField(
         default=None,
         null=True
