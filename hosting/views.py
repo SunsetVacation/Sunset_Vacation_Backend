@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from core.models import User
-from .models import Category, Hosting, Property, Facility
+from .models import Category, Hosting, Property, Facility, PropertyFacilities
 from .serializers import CategorySerializer, HostingSerializer, PropertySerializer, FacilitySerializer
 from rest_framework import viewsets
 from django.core import serializers
@@ -42,7 +42,7 @@ def getFacilities(request):
     except Facility.DoesNotExist:
         return Response({"error": "No facility to show"}, status=status.HTTP_404_NOT_FOUND)
     facilities_serializer = FacilitySerializer(facilities, many=True)
-    return Response({'facilities': facilities_serializer.data}, status=status.HTTP_200_OK)
+    return Response({'facilities': facilities_serializer.data, 'success': True}, status=status.HTTP_200_OK)
 
 
 class PropertyHostingView(
@@ -51,6 +51,7 @@ class PropertyHostingView(
     DestroyModelMixin,
 ):
     def post(self, request):
+        print(request.data)
         hosting_serializer = HostingSerializer(data=request.data)
         if hosting_serializer.is_valid():
             hosting = hosting_serializer.save()
@@ -65,6 +66,20 @@ class PropertyHostingView(
         else:
             hosting.delete()
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        facilities = request.data["facilities"]
+        print(facilities)
+        for id in facilities:
+            try:
+                facility = Facility.objects.get(facility_id=id)
+                newPropFacility = PropertyFacilities(hosting=hosting, facility=facility)
+                newPropFacility.save()
+            except Facility.DoesNotExist:
+                return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
+
+        print(request.data['images'])
+
         return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
                         status=status.HTTP_201_CREATED)
 

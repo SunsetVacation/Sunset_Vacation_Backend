@@ -151,3 +151,15 @@ class Facility(models.Model):
         null=True
     )
 
+class PropertyFacilities(models.Model):
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    facility = models.ForeignKey(
+        Facility,
+        on_delete=models.CASCADE,
+        null=False
+    )
