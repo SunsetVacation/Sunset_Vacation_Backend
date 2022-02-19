@@ -2,7 +2,7 @@ from dataclasses import field, fields
 from importlib.metadata import requires
 # from typing_extensions import Required
 from rest_framework import serializers
-from .models import Category, Hosting, Property, Facility, Property_Facilities, Location
+from .models import Category, Hosting, Property, Facility, Property_Facilities, Location, Property_Images
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -170,7 +170,7 @@ class PropertyFacilitiesSerializer(serializers.ModelSerializer):
 
 class PropertyImagesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Property_Facilities
+        model = Property_Images
         fields = (
             "hosting",
             "link"

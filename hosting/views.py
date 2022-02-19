@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from core.models import User
-from .models import Category, Hosting, Property, Facility, Property_Facilities, Location
-from .serializers import CategorySerializer, HostingSerializer, PropertySerializer, FacilitySerializer, LocationSerializer
+from .models import Category, Hosting, Property, Facility, Property_Facilities, Location, Property_Images
+from .serializers import CategorySerializer, HostingSerializer, PropertySerializer, FacilitySerializer, LocationSerializer, PropertyFacilitiesSerializer, PropertyImagesSerializer
 from rest_framework import viewsets
 from django.core import serializers
 from rest_framework.decorators import action
@@ -71,7 +71,6 @@ class PropertyHostingView(
         print(request.data)
         location_serializer = LocationSerializer(data=request.data)
         if location_serializer.is_valid():
-            print("hello")
             location = location_serializer.save()
             location_serializer = LocationSerializer(location)
         else:
@@ -87,7 +86,6 @@ class PropertyHostingView(
                 facility = Facility.objects.get(facility_id=id)
                 new_prop_facility = Property_Facilities(hosting=hosting, facility=facility)
                 new_prop_facility.save()
-                new_prop_facility_serializer = PropertySerializer(new_prop_facility)
             except Facility.DoesNotExist:
                 return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -95,12 +93,15 @@ class PropertyHostingView(
         print(request.data['images'])
         for image in images:
             try:
-                new_prop_facility = Property_Images(hosting=hosting,link=image["src"])
-                new_prop_facility.save()
-            except Facility.DoesNotExist:
+                new_prop_image = Property_Images(hosting=hosting, link=image["src"])
+                new_prop_image.save()
+            except Property_Images.DoesNotExist:
                 return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "facility": new_prop_facility_serializer.data, "location": location_serializer.data},
+        facilities = Property_Facilities.objects.all().filter(hosting_id=hosting.hosting_id)
+        facilities_serializer = PropertyFacilitiesSerializer(facilities, many=True)
+        images = Property_Images.objects.all().filter(hosting_id=hosting.hosting_id)
+        images_serializer = PropertyImagesSerializer(images, many=True)
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "location": location_serializer.data, "facilities": facilities_serializer.data, "images": images_serializer.data},
                         status=status.HTTP_201_CREATED)
 
     def put(self, request, hosting_id=None, *args, **kwargs):
