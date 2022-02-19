@@ -2,7 +2,7 @@ from dataclasses import field, fields
 from importlib.metadata import requires
 # from typing_extensions import Required
 from rest_framework import serializers
-from .models import Category, Hosting, Property, Facility, PropertyFacilities
+from .models import Category, Hosting, Property, Facility, Property_Facilities
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -41,9 +41,12 @@ class HostingSerializer(serializers.ModelSerializer):
 
     def update(self, hosting, validated_data):
         hosting.title = validated_data.get('title') if validated_data.get('title') else hosting.title
-        hosting.description = validated_data.get('description') if validated_data.get('description') else hosting.description
-        hosting.max_days_refund = validated_data.get('max_days_refund') if validated_data.get('max_days_refund') else hosting.max_days_refund
-        hosting.hosting_start_date = validated_data.get('hosting_start_date') if validated_data.get('hosting_start_date') else hosting.hosting_start_date
+        hosting.description = validated_data.get('description') if validated_data.get(
+            'description') else hosting.description
+        hosting.max_days_refund = validated_data.get('max_days_refund') if validated_data.get(
+            'max_days_refund') else hosting.max_days_refund
+        hosting.hosting_start_date = validated_data.get('hosting_start_date') if validated_data.get(
+            'hosting_start_date') else hosting.hosting_start_date
         hosting.published = validated_data.get('published') if validated_data.get('published') else hosting.published
         hosting.save()
         return hosting
@@ -90,16 +93,23 @@ class PropertySerializer(serializers.ModelSerializer):
         )
 
     def update(self, property, validated_data):
-        property.per_night_cost = validated_data.get('per_night_cost') if validated_data.get('per_night_cost') else  property.per_night_cost
-        property.entire_private_or_shared = validated_data.get('entire_private_or_shared') if validated_data.get('entire_private_or_shared') else property.entire_private_or_shared
-        property.highest_guest_no = validated_data.get('highest_guest_no') if validated_data.get('highest_guest_no') else property.highest_guest_no
-        property.beds = validated_data.get('beds') if  validated_data.get('beds') else property.beds
+        property.per_night_cost = validated_data.get('per_night_cost') if validated_data.get(
+            'per_night_cost') else property.per_night_cost
+        property.entire_private_or_shared = validated_data.get('entire_private_or_shared') if validated_data.get(
+            'entire_private_or_shared') else property.entire_private_or_shared
+        property.highest_guest_no = validated_data.get('highest_guest_no') if validated_data.get(
+            'highest_guest_no') else property.highest_guest_no
+        property.beds = validated_data.get('beds') if validated_data.get('beds') else property.beds
         property.bedrooms = validated_data.get('bedrooms') if validated_data.get('bedrooms') else property.bedrooms
         property.bathrooms = validated_data.get('bathrooms') if validated_data.get('bathrooms') else property.bathrooms
-        property.private_bathroom_available = validated_data.get('private_bathroom_available') if validated_data.get('private_bathroom_available') else property.private_bathroom_available
-        property.need_host_confirmation = validated_data.get('need_host_confirmation') if validated_data.get('need_host_confirmation') else property.need_host_confirmation
-        property.partial_pay_allowed = validated_data.get('partial_pay_allowed') if validated_data.get('partial_pay_allowed') else property.partial_pay_allowed
-        property.category_id = validated_data.get('category_id') if validated_data.get('category_id') else property.category_id
+        property.private_bathroom_available = validated_data.get('private_bathroom_available') if validated_data.get(
+            'private_bathroom_available') else property.private_bathroom_available
+        property.need_host_confirmation = validated_data.get('need_host_confirmation') if validated_data.get(
+            'need_host_confirmation') else property.need_host_confirmation
+        property.partial_pay_allowed = validated_data.get('partial_pay_allowed') if validated_data.get(
+            'partial_pay_allowed') else property.partial_pay_allowed
+        property.category_id = validated_data.get('category_id') if validated_data.get(
+            'category_id') else property.category_id
         property.save()
         return property
 
@@ -139,7 +149,7 @@ class PropertySerializer(serializers.ModelSerializer):
 #         property_facilities.save()
 #         return property_facilities
 
-    
+
 #     class Meta:
 #         model = PropertyFacilities
 #         fields = (
@@ -149,11 +159,11 @@ class PropertySerializer(serializers.ModelSerializer):
 #         )
 
 
-
 class PropertyFacilitiesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PropertyFacilities
+        model = Property_Facilities
         fields = (
             "hosting",
             "facility"
         )
+

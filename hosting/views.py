@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.decorators import api_view, renderer_classes
 from core.models import User
-from .models import Category, Hosting, Property, Facility, PropertyFacilities
+from .models import Category, Hosting, Property, Facility, Property_Facilities
 from .serializers import CategorySerializer, HostingSerializer, PropertySerializer, FacilitySerializer
 from rest_framework import viewsets
 from django.core import serializers
@@ -69,20 +69,27 @@ class PropertyHostingView(
             hosting.delete()
             return Response({"error": "Property creation error"}, status=status.HTTP_400_BAD_REQUEST)
 
-
         facilities = request.data["facilities"]
         print(facilities)
         for id in facilities:
             try:
                 facility = Facility.objects.get(facility_id=id)
-                newPropFacility = PropertyFacilities(hosting=hosting, facility=facility)
-                newPropFacility.save()
+                new_prop_facility = Property_Facilities(hosting=hosting, facility=facility)
+                new_prop_facility.save()
+                new_prop_facility_serializer = PropertySerializer(new_prop_facility)
             except Facility.DoesNotExist:
                 return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
 
-        print(request.data['images'])
+        # images = request.data["images"]
+        # print(request.data['images'])
+        # for image in images:
+            # try:
+            #     new_prop_facility = Property_Images(hosting=hosting,link=image["src"])
+            #     new_prop_facility.save()
+            # except Facility.DoesNotExist:
+            #     return Response({"error": "No facility to store"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data},
+        return Response({"hosting": hosting_serializer.data, "property": property_serializer.data, "facility": new_prop_facility_serializer.data},
                         status=status.HTTP_201_CREATED)
 
     def put(self, request, hosting_id=None, *args, **kwargs):
