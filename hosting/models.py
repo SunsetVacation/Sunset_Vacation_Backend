@@ -163,3 +163,104 @@ class PropertyFacilities(models.Model):
         on_delete=models.CASCADE,
         null=False
     )
+
+# class Location(models.Model):
+#     hosting = models.ForeignKey(
+#         Hosting,
+#         null=False,
+#         on_delete=models.CASCADE,
+#         primary_key=True
+#     )
+#     latitude = models.FloatField(
+#         default=None,
+#         null=True
+#     )
+#     longitude = models.FloatField(
+#         default=None,
+#         null=True
+#     )
+
+#     address = models.CharField(
+#         max_length=200,
+#         default=None,
+#         blank=False,
+#         null=True
+#     )
+
+
+# class Image(models.Model):
+#     image_id = models.AutoField(
+#         primary_key=True
+#     )
+
+#     hosting = models.ForeignKey(
+#         Hosting,
+#         null=False,
+#         on_delete=models.CASCADE,
+#     )
+
+#     image_url = models.CharField(
+#         max_length=500,
+#         default=None,
+#         blank=False,
+#         null=True
+#     )
+
+
+
+
+class Property_Facilities(models.Model):
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    facility = models.ForeignKey(
+        Facility,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+
+class Location(models.Model):
+    location_id = models.AutoField(
+        primary_key=True
+    )
+
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    longitude = models.FloatField(
+        default=None,
+        null=True
+    )
+
+    latitude = models.FloatField(
+        default=None,
+        null=True
+    )
+
+    address = models.CharField(
+        max_length=200,
+        default=None,
+        blank=False,
+        null=True
+    )
+
+
+class Property_Images(models.Model):
+    hosting = models.ForeignKey(
+        Hosting,
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    link = models.CharField(
+        default=None,
+        null=True,
+        max_length=300
+    )

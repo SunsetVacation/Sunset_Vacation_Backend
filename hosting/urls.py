@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
@@ -12,5 +13,6 @@ urlpatterns = [
     path('facilities/', views.getFacilities, name="getFacilities"),
     path('properties/', views.PropertyHostingView.as_view()),
     path('properties/<int:hosting_id>/', views.PropertyHostingView.as_view()),
+    path('gethosteditem/', views.getHostingList, name='gethostedlist'),
     # path('', include(router.urls))
 ]

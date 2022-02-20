@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from copyreg import constructor
 from operator import truediv
 from tkinter.tix import Tree
 from django.shortcuts import render
@@ -21,6 +23,7 @@ def login(request):
     """Return a message"""
     email = request.data["email"]
     password = request.data["password"]
+    print(request.data)
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -28,12 +31,12 @@ def login(request):
     if user.password != password:
         return Response({"error": "Password did not match"}, status=status.HTTP_401_UNAUTHORIZED)
     if not user.host:
-        return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": False, "success": True}, status=status.HTTP_200_OK)
+        return Response({"user": user.user_id, "firstname": user.firstname, "lastname": user.lastname, "host": user.host, "unpublishedHosting": False, "success": True}, status=status.HTTP_200_OK)
     try:
-        Hosting.objects.get(owner=user, published=False)
+        hosting = Hosting.objects.filter(owner=user, published=False)
     except Hosting.DoesNotExist:
-        return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": False, "success": True})
-    return Response({"user": user.user_id, "host": user.host, "unpublishedHosting": True, "success": True}, status=status.HTTP_200_OK)
+        return Response({"user": user.user_id,  "firstname": user.firstname, "lastname": user.lastname, "host": user.host, "unpublishedHosting": False,  "success": True})
+    return Response({"user": user.user_id, "firstname": user.firstname, "lastname": user.lastname, "host": user.host,  "success": True}, status=status.HTTP_200_OK)
 
 
 

@@ -1,8 +1,9 @@
 from dataclasses import field, fields
 from importlib.metadata import requires
+from statistics import mode
 # from typing_extensions import Required
 from rest_framework import serializers
-from .models import Category, Hosting, Property, Facility, PropertyFacilities
+from .models import Category, Hosting, Location, Property, Facility, Property_Facilities,Property_Images
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -150,10 +151,70 @@ class PropertySerializer(serializers.ModelSerializer):
 
 
 
+# class PropertyFacilitiesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = PropertyFacilities
+#         fields = (
+#             "hosting",
+#             "facility"
+#         )
+
+
+# class LocationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Location
+#         fields = '__all__'
+
+# class ImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Image
+#         fields = '__all__'
+
+
 class PropertyFacilitiesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PropertyFacilities
+        model = Property_Facilities
         fields = (
             "hosting",
             "facility"
+        )
+
+
+class PropertyImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property_Images
+        fields = (
+            "hosting",
+            "link"
+        )
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    hosting_id = serializers.IntegerField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
+    address = serializers.CharField(required=False)
+
+    def create(self, validated_data):
+        return Location.objects.create(
+            hosting_id=validated_data.get("hosting_id"),
+            longitude=validated_data.get("longitude"),
+            latitude=validated_data.get("latitude"),
+            address=validated_data.get("address")
+        )
+
+    def update(self, location, validated_data):
+        location.longitude = validated_data.get('longitude') if validated_data.get('longitude') else location.longitude
+        location.latitude = validated_data.get('latitude') if validated_data.get('latitude') else location.latitude
+        location.address = validated_data.get('address') if validated_data.get('address') else location.address
+        location.save()
+        return 
+
+    class Meta:
+        model = Location
+        fields = (
+            "hosting_id",
+            "longitude",
+            "latitude",
+            "address"
         )
